@@ -35,6 +35,7 @@ function About() {
             {skills.map((s) => (
               <span key={s} className="text-xs px-3 py-1.5 rounded-full bg-gray-100 text-gray-800 border border-gray-200">
                 {s}
+                
               </span>
             ))}
           </div>

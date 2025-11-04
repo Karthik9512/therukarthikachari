@@ -12,17 +12,23 @@ const projects = [
     link: 'https://github.com/Karthik9512/Superstore-Sales-Data'
   },
   {
-    title: 'Nexus Website',
-    description: 'Next-gen digital hub for engagement.',
-    tech: ['React', 'AI', 'Security'],
-    link: '#'
+    title: 'Stock Market Risk & Return Analyzer',
+    description: 'Analyzes stock data to calculate returns, volatility, and Sharpe ratio with Power BI dashboards.',
+    tech: ['Python', 'Pandas', 'NumPy', 'Matplotlib', 'Power BI', 'DAX'],
+    link: 'https://github.com/Karthik9512/Stock-Market-Risk-Return-Analyzer'
   },
   {
-    title: 'Skill Swap Platform',
-    description: 'Space for sharing & learning skills.',
-    tech: ['MERN'],
-    link: '#'
+    title: 'Study Habit Predictor — Linear Regression',
+    description: 'Built a regression model to predict students’ final exam scores based on study hours and attendance. Achieved 85% accuracy.',
+    tech: ['Python', 'Pandas', 'NumPy', 'Matplotlib', 'Seaborn'],
+    link: 'https://github.com/Karthik9512/Smart-Study-Habit-Analyzer-Grade-Predictor'
   },
+  {
+    title: 'Student Admission Prediction',
+    description: 'Machine learning model predicting student admissions based on exam data.',
+    tech: ['Python', 'NumPy', 'Pandas', 'Logistic Regression'],
+    link: 'https://github.com/Karthik9512/Predicting-Student-Admission-with-logistic-Regression'
+  }
 ]
 
 function Projects() {

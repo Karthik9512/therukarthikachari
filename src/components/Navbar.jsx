@@ -1,73 +1,124 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { NavLink, Link } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
 
 function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
 
-  const baseLink = "px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 transition"
-  const activeLink = "bg-gray-900 text-white hover:bg-gray-900"
+  // Common link styles
+  const baseLink =
+    'px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200'
+  const activeLink =
+    'bg-gradient-to-r from-[#7209B7] via-[#5A3AFF] to-[#4361EE] text-white shadow-md'
 
   return (
-    <header className="sticky top-0 z-20 bg-white/80 backdrop-blur border-b border-gray-200">
-      <nav className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
-          <div className="flex items-center">
-            <Link to="/" className="text-lg font-semibold tracking-tight">
-              Karthik Achari
-            </Link>
-          </div>
-          <div className="hidden md:flex items-center gap-1">
-            <NavLink to="/" end className={({ isActive }) => `${baseLink} ${isActive ? activeLink : "text-gray-700"}`}>
-              Home
-            </NavLink>
-            <NavLink to="/projects" className={({ isActive }) => `${baseLink} ${isActive ? activeLink : "text-gray-700"}`}>
-              Projects
-            </NavLink>
-            <NavLink to="/about" className={({ isActive }) => `${baseLink} ${isActive ? activeLink : "text-gray-700"}`}>
-              About
-            </NavLink>
-            <NavLink to="/contact" className={({ isActive }) => `${baseLink} ${isActive ? activeLink : "text-gray-700"}`}>
-              Contact
-            </NavLink>
+    <header className="sticky top-0 z-30 border-b border-[#E5E0FF]/60 bg-white/70 backdrop-blur-md shadow-sm">
+      <nav className="max-w-6xl px-4 mx-auto sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          
+          {/* 🌈 Logo */}
+          <Link
+            to="/"
+            className="text-lg sm:text-xl font-extrabold tracking-tight bg-gradient-to-r from-[#7209B7] via-[#5A3AFF] to-[#4361EE] bg-clip-text text-transparent hover:opacity-90 transition"
+          >
+          T Karthik Achari
+          </Link>
+
+          {/* 🖥️ Desktop Navigation */}
+          <div className="items-center hidden gap-2 md:flex">
+            {[
+              ['/', 'Home'],
+              ['/projects', 'Projects'],
+              ['/about', 'About'],
+              ['/contact', 'Contact'],
+            ].map(([path, label]) => (
+              <NavLink
+                key={path}
+                to={path}
+                end={path === '/'}
+                className={({ isActive }) =>
+                  `${baseLink} ${
+                    isActive
+                      ? activeLink
+                      : 'text-gray-700 hover:text-[#5A3AFF]'
+                  }`
+                }
+              >
+                {label}
+              </NavLink>
+            ))}
           </div>
 
+          {/* 📱 Mobile Menu Button */}
           <button
-            className="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none"
-            onClick={() => setMobileOpen((v) => !v)}
+            onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle navigation"
+            className="inline-flex items-center justify-center p-2 text-gray-700 rounded-md md:hidden hover:bg-gray-100 focus:outline-none"
           >
-            <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
               {mobileOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
               ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               )}
             </svg>
           </button>
         </div>
-        {mobileOpen && (
-          <div className="md:hidden pb-4">
-            <div className="flex flex-col gap-1">
-              <NavLink onClick={() => setMobileOpen(false)} to="/" end className={({ isActive }) => `${baseLink} ${isActive ? activeLink : "text-gray-700"}`}>
-                Home
-              </NavLink>
-              <NavLink onClick={() => setMobileOpen(false)} to="/projects" className={({ isActive }) => `${baseLink} ${isActive ? activeLink : "text-gray-700"}`}>
-                Projects
-              </NavLink>
-              <NavLink onClick={() => setMobileOpen(false)} to="/about" className={({ isActive }) => `${baseLink} ${isActive ? activeLink : "text-gray-700"}`}>
-                About
-              </NavLink>
-              <NavLink onClick={() => setMobileOpen(false)} to="/contact" className={({ isActive }) => `${baseLink} ${isActive ? activeLink : "text-gray-700"}`}>
-                Contact
-              </NavLink>
-            </div>
-          </div>
-        )}
+
+        {/* 📲 Animated Mobile Dropdown */}
+        <AnimatePresence>
+          {mobileOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+              className="pb-4 md:hidden"
+            >
+              <div className="flex flex-col gap-1">
+                {[
+                  ['/', 'Home'],
+                  ['/projects', 'Projects'],
+                  ['/about', 'About'],
+                  ['/contact', 'Contact'],
+                ].map(([path, label]) => (
+                  <NavLink
+                    key={path}
+                    to={path}
+                    end={path === '/'}
+                    onClick={() => setMobileOpen(false)}
+                    className={({ isActive }) =>
+                      `${baseLink} ${
+                        isActive
+                          ? 'bg-gradient-to-r from-[#7209B7] via-[#5A3AFF] to-[#4361EE] text-white'
+                          : 'text-gray-700 hover:bg-[#F5F3FF]'
+                      }`
+                    }
+                  >
+                    {label}
+                  </NavLink>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
     </header>
   )
 }
 
 export default Navbar
-
-

@@ -1,165 +1,158 @@
-import { useState } from 'react'
+import React from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 
-const Contact = () => {
-  const [form, setForm] = useState({ name: '', email: '', message: '' })
-  const [status, setStatus] = useState(null)
+// Animation presets
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: (delay = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, ease: "easeOut", delay },
+  }),
+};
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    setStatus('sending')
-
-    // Replace this with your real submit endpoint or email handler
-    try {
-      await new Promise((r) => setTimeout(r, 700))
-      setStatus('sent')
-      setForm({ name: '', email: '', message: '' })
-    } catch (err) {
-      setStatus('error')
-    }
-  }
+function Contact() {
+  const { scrollY } = useScroll();
+  const y1 = useTransform(scrollY, [0, 500], [0, 60]);
+  const y2 = useTransform(scrollY, [0, 500], [0, -40]);
 
   return (
-    <section className="flex flex-col items-center justify-center min-h-screen px-4 py-12 bg-white">
-      {/* Centered heading */}
-      <h1 className="mb-8 text-4xl font-extrabold tracking-tight text-center md:text-5xl" style={{ fontFamily: 'Poppins, Inter, system-ui' }}>
-        Contact
-      </h1>
+    <section className="relative flex flex-col items-center justify-center min-h-screen px-4 py-20 overflow-hidden bg-gradient-to-b from-[#f9f6ff] via-white to-[#f1f0ff]">
+      {/* ✨ Parallax Background Glow */}
+      <motion.div
+        style={{ y: y1 }}
+        className="absolute inset-0 -z-10 bg-gradient-to-tr from-purple-200/40 via-transparent to-indigo-100/40"
+      />
+      <motion.div
+        style={{ y: y2 }}
+        className="absolute rounded-full -top-24 -left-20 w-72 h-72 bg-purple-400/20 blur-3xl -z-10 animate-pulse"
+      />
+      <motion.div
+        style={{ y: y1 }}
+        className="absolute right-0 rounded-full -bottom-24 w-72 h-72 bg-indigo-400/20 blur-3xl -z-10 animate-pulse"
+      />
 
-      {/* Background gradient glow */}
-      <div className="absolute inset-0 pointer-events-none -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#6A0DAD]/10 via-transparent to-[#C3AED6]/05" />
-      </div>
+      {/* 💜 Heading */}
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeUp}
+        custom={0.1}
+        className="text-center mb-14"
+      >
+        <h2 className="text-5xl font-extrabold tracking-tight bg-gradient-to-r from-[#7209B7] via-[#5A3AFF] to-[#4361EE] bg-clip-text text-transparent drop-shadow-sm">
+          Get in Touch
+        </h2>
+        <p className="mt-3 text-lg font-medium text-[#5A3AFF]/80 max-w-2xl mx-auto">
+          I’d love to hear from you — whether it’s about collaboration, freelance work, or just a friendly chat.
+        </p>
+      </motion.div>
 
-      {/* Split card */}
-      <div className="w-full max-w-5xl rounded-2xl p-1 bg-gradient-to-br from-[#F8F5FF]/30 to-white/30 shadow-xl">
-        <div className="flex flex-col overflow-hidden md:flex-row rounded-2xl backdrop-blur-md bg-white/60 md:gap-0">
-          {/* Left: contact details */}
-          <div className="flex flex-col justify-center gap-6 p-8 md:w-1/2 md:p-12">
-            <div className="text-sm font-medium tracking-wide text-purple-700 uppercase">Get in touch</div>
-            <p className="max-w-lg text-gray-700">
-              I’m open to collaborations, freelance work, and interesting projects. Reach out via email or connect on GitHub/LinkedIn.
-            </p>
+      {/* 🌸 Contact Form Container */}
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeUp}
+        custom={0.3}
+        className="w-full max-w-4xl rounded-3xl p-[1px] bg-gradient-to-br from-[#7F00FF]/20 to-[#3A0CA3]/10 shadow-2xl"
+      >
+        <div className="p-8 overflow-hidden rounded-3xl bg-white/70 backdrop-blur-md md:p-12">
+          <form
+            action="https://formspree.io/f/your-form-id" // 👉 Replace with your Formspree or backend endpoint
+            method="POST"
+            className="flex flex-col gap-6"
+          >
+            {/* 🧑 Name */}
+            <motion.div variants={fadeUp} custom={0.4} className="flex flex-col">
+              <label className="text-sm font-semibold text-[#5A3AFF] mb-2">Name</label>
+              <input
+                type="text"
+                name="name"
+                required
+                placeholder="Enter your name"
+                className="p-3 rounded-xl border border-purple-200 bg-white/70 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#7209B7]/50 transition-all"
+              />
+            </motion.div>
 
-            <div className="mt-4 space-y-3">
-              <ContactItem label="Email" 
-              value="karthikachari780@gmail.com" 
-              href="mailto:karthikachari780@gmail.com" />
+            {/* 📧 Email */}
+            <motion.div variants={fadeUp} custom={0.5} className="flex flex-col">
+              <label className="text-sm font-semibold text-[#5A3AFF] mb-2">Email</label>
+              <input
+                type="email"
+                name="email"
+                required
+                placeholder="Enter your email"
+                className="p-3 rounded-xl border border-purple-200 bg-white/70 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#5A3AFF]/50 transition-all"
+              />
+            </motion.div>
 
-              <ContactItem label="Phone" 
-              value="+91 6304865771" 
-              href="tel:+916304865771" />
+            {/* 💬 Message */}
+            <motion.div variants={fadeUp} custom={0.6} className="flex flex-col">
+              <label className="text-sm font-semibold text-[#5A3AFF] mb-2">Message</label>
+              <textarea
+                name="message"
+                required
+                rows="5"
+                placeholder="Type your message..."
+                className="p-3 rounded-xl border border-purple-200 bg-white/70 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#4361EE]/50 transition-all"
+              ></textarea>
+            </motion.div>
 
-              <ContactItem label="GitHub" 
-              value="Karthik9512" 
-              href="https://github.com/Karthik9512?tab=repositories" 
-              external />
-
-              <ContactItem label="LinkedIn" 
-              value="tkarthikachari-8a7b92344" 
-              href="www.linkedin.com/in/tkarthikachari-8a7b92344" 
-              external />
-
-            </div>
-          </div>
-
-          {/* Right: form */}
-          <div className="flex items-center p-6 md:w-1/2 md:p-12">
-            <form onSubmit={handleSubmit} className="w-full space-y-4">
-              <div className="grid grid-cols-1 gap-4">
-                <label className="sr-only" htmlFor="name">Name</label>
-                <input
-                  id="name"
-                  name="name"
-                  value={form.name}
-                  onChange={handleChange}
-                  placeholder="Your name"
-                  required
-                  className="w-full px-4 py-3 transition border rounded-xl bg-white/70 backdrop-blur-sm border-white/40 focus:outline-none focus:ring-2 focus:ring-purple-400"
-                />
-
-                <label className="sr-only" htmlFor="email">Email</label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={form.email}
-                  onChange={handleChange}
-                  placeholder="you@domain.com"
-                  required
-                  className="w-full px-4 py-3 transition border rounded-xl bg-white/70 backdrop-blur-sm border-white/40 focus:outline-none focus:ring-2 focus:ring-purple-400"
-                />
-
-                <label className="sr-only" htmlFor="message">Message</label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows="5"
-                  value={form.message}
-                  onChange={handleChange}
-                  placeholder="Tell me about your project..."
-                  required
-                  className="w-full px-4 py-3 transition border resize-none rounded-xl bg-white/70 backdrop-blur-sm border-white/40 focus:outline-none focus:ring-2 focus:ring-purple-400"
-                />
-              </div>
-
-              <div className="flex items-center gap-4">
-                <button
-                  type="submit"
-                  className="inline-flex items-center justify-center px-5 py-3 rounded-full text-white font-semibold bg-gradient-to-r from-[#7F00FF] to-[#E100FF] shadow-lg hover:scale-[1.02] transform transition-all duration-200"
-                >
-                  {status === 'sending' ? 'Sending…' : 'Send Message'}
-                </button>
-
-                {status === 'sent' && (
-                  <span className="text-sm text-green-600">Message sent — I’ll reply soon.</span>
-                )}
-                {status === 'error' && (
-                  <span className="text-sm text-red-600">Sending failed. Try again.</span>
-                )}
-              </div>
-            </form>
-          </div>
+            {/* 🚀 Submit Button */}
+            <motion.button
+              type="submit"
+              whileHover={{ scale: 1.05 }}
+              className="mt-4 w-full md:w-auto self-center px-8 py-3 font-semibold text-white rounded-xl bg-gradient-to-r from-[#7209B7] via-[#5A3AFF] to-[#4361EE] shadow-md hover:shadow-lg transition-all"
+            >
+              Send Message ✉️
+            </motion.button>
+          </form>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Footer */}
-      <footer className="mt-8 text-center text-sm text-[#B0B0B0] w-full max-w-5xl">
-        <div className="mx-auto w-24 h-1 rounded-full mb-3 bg-gradient-to-r from-[#7F00FF] to-[#E100FF] opacity-80" />
-        © {new Date().getFullYear()} Omesh — Built with care.
-      </footer>
+      {/* 🌐 Social Links */}
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeUp}
+        custom={0.8}
+        className="flex flex-wrap justify-center gap-6 mt-12"
+      >
+        {[
+          { name: "GitHub", link: "https://github.com/Karthik9512" },
+          { name: "LinkedIn", link: "www.linkedin.com/in/tkarthikachari-8a7b92344" },
+          { name: "Email", link: "mailto:karthikachari780@gmail.com" },
+        ].map((social) => (
+          <motion.a
+            key={social.name}
+            href={social.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.1 }}
+            className="px-5 py-2.5 rounded-full bg-gradient-to-br from-[#E0C3FC]/70 to-[#8EC5FC]/70 border border-[#d1b3ff]/40 text-[#3A0CA3] font-semibold shadow-sm hover:shadow-md transition-all"
+          >
+            {social.name}
+          </motion.a>
+        ))}
+      </motion.div>
+
+      {/* 💫 Footer */}
+      <motion.footer
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeUp}
+        custom={1}
+        className="mt-16 text-sm text-center text-gray-500"
+      >
+        <div className="w-24 h-1 mx-auto mb-3 rounded-full bg-gradient-to-r from-[#7209B7] to-[#4361EE]" />
+       
+      </motion.footer>
     </section>
-  )
+  );
 }
 
-function ContactItem({ label, value, href, external }) {
-  return (
-    <a
-      href={href}
-      target={external ? '_blank' : undefined}
-      rel={external ? 'noreferrer' : undefined}
-      className="flex items-center gap-3 px-3 py-2 transition group w-max rounded-xl hover:bg-white/50"
-    >
-      <span className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-[#7F00FF]/20 to-[#E100FF]/10 text-[#7F00FF] group-hover:scale-105 transform transition-shadow duration-200">
-        {/* simple generic icon */}
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-          <path d="M12 2L2 7l10 5 10-5-10-5z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M2 17l10 5 10-5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M2 12l10 5 10-5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </span>
-
-      <div className="text-left">
-        <div className="text-sm text-gray-600">{label}</div>
-        <div className="text-sm font-medium text-gray-900">{value}</div>
-      </div>
-    </a>
-  )
-}
-
-export default Contact
-
-
+export default Contact;

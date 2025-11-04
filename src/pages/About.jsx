@@ -1,20 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
 
+// 🧠 Skills & Certifications
 const skills = [
-  'Python',
-  'Pandas',
-  'NumPy',
-  'Matplotlib',
-  'Seaborn',
-  'Machine Learning',
-  'Statistics',
-  'Data Analysis',
-  'Data Visualization',
-  'Power BI',
-  'DAX',
-  'Excel',
-  'MySQL',
-  'Node.js'
+  'Python', 'Pandas', 'NumPy', 'Matplotlib', 'Seaborn',
+  'Machine Learning', 'Statistics', 'Data Analysis', 'Data Visualization',
+  'Power BI', 'DAX', 'Excel', 'MySQL', 'Node.js'
 ]
 
 const certs = [
@@ -25,102 +16,179 @@ const certs = [
   'Power BI for Beginners'
 ]
 
+// ✨ Motion Variants
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: (delay = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.7,
+      ease: 'easeOut',
+      delay,
+    },
+  }),
+}
+
 function About() {
+  // 🌀 Parallax Scroll Effect
+  const { scrollY } = useScroll()
+  const y1 = useTransform(scrollY, [0, 500], [0, 80])
+  const y2 = useTransform(scrollY, [0, 500], [0, -50])
+  const [year] = useState(new Date().getFullYear())
+
   return (
-    <section className="relative flex flex-col items-center justify-center min-h-screen px-4 py-16 overflow-hidden bg-white">
-      {/* ✨ Background Glow */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-purple-100 via-white to-purple-50 opacity-70" />
-      <div className="absolute rounded-full -top-20 -left-20 w-60 h-60 bg-purple-300/30 blur-3xl animate-pulse -z-10" />
-      <div className="absolute bottom-0 right-0 rounded-full w-72 h-72 bg-purple-400/20 blur-3xl animate-pulse -z-10" />
+    <section className="relative flex flex-col items-center justify-center min-h-screen px-4 py-20 overflow-hidden bg-gradient-to-b from-[#f9f6ff] via-white to-[#f1f0ff]">
+      
+      {/* 🌈 Parallax Background Layers */}
+      <motion.div
+        style={{ y: y1 }}
+        className="absolute inset-0 -z-10 bg-gradient-to-tr from-purple-200/40 via-transparent to-indigo-100/40"
+      />
+      <motion.div
+        style={{ y: y2 }}
+        className="absolute rounded-full -top-20 -left-16 w-72 h-72 bg-purple-400/20 blur-3xl -z-10 animate-pulse"
+      />
+      <motion.div
+        style={{ y: y1 }}
+        className="absolute right-0 rounded-full -bottom-20 w-72 h-72 bg-indigo-400/20 blur-3xl -z-10 animate-pulse"
+      />
 
       {/* 💜 Heading */}
-      <h1
-        className="mb-8 text-4xl font-extrabold tracking-tight text-center text-purple-700 sm:text-5xl"
-        style={{ fontFamily: 'Poppins, Inter, system-ui' }}
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeUp}
+        custom={0.1}
+        className="text-center mb-14"
       >
-        About Me
-      </h1>
+        <h2 className="text-5xl font-extrabold tracking-tight bg-gradient-to-r from-[#7209B7] via-[#5A3AFF] to-[#4361EE] bg-clip-text text-transparent drop-shadow-sm">
+          About Me
+        </h2>
+        <p className="mt-3 text-lg font-medium text-[#5A3AFF]/80 max-w-2xl mx-auto">
+          A passionate Data Science enthusiast who loves turning data into stories, 
+          building AI-driven tools, and designing elegant solutions that make an impact.
+        </p>
+      </motion.div>
 
-      {/* 🌸 Glass Card */}
-      <div className="w-full max-w-5xl p-[1px] rounded-3xl bg-gradient-to-br from-purple-300/30 to-purple-100/10 shadow-2xl">
-        <div className="flex flex-col overflow-hidden rounded-3xl bg-white/70 backdrop-blur-md md:flex-row">
+      {/* 🌸 Glass Card Section */}
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeUp}
+        custom={0.3}
+        className="w-full max-w-6xl rounded-3xl p-[1px] bg-gradient-to-br from-[#7F00FF]/20 to-[#3A0CA3]/10 shadow-2xl"
+      >
+        <div className="flex flex-col overflow-hidden md:flex-row rounded-3xl bg-white/70 backdrop-blur-md">
 
           {/* 🧍 Left Side: Bio */}
-          <div className="flex flex-col justify-center gap-6 p-8 md:w-1/2 md:p-12">
-            <div className="text-sm font-medium tracking-wide text-purple-700 uppercase">
-              Who I Am
-            </div>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            custom={0.4}
+            className="flex flex-col justify-center gap-6 p-10 md:w-1/2"
+          >
+            <div className="text-sm font-medium tracking-wide text-[#5A3AFF] uppercase">Who I Am</div>
 
-            <p className="max-w-lg leading-relaxed text-gray-700">
-              I’m a B.Tech CSE student at KL University with hands-on experience in Python, Machine Learning, Power BI, and Data Analytics. 
-              I love transforming raw data into actionable insights and building AI-driven solutions that solve real-world problems. 
-              When I’m not coding, I’m diving into the latest in AI, binge-watching anime, battling it out in Call of Duty, 
-              or traveling to spark new ideas and fresh inspiration.
+            <p className="leading-relaxed text-gray-700">
+              I’m <span className="font-semibold text-[#5A3AFF]">Karthik Achari</span>, a B.Tech CSE student at KL University with a deep interest in 
+              <span className="font-semibold text-[#7209B7]"> Data Analytics, Machine Learning</span>, and 
+              <span className="font-semibold text-[#7209B7]"> AI-driven systems</span>.  
+              I love crafting intelligent solutions from raw data and designing intuitive, data-powered dashboards.
             </p>
 
-            {/* 📨 Get in Touch */}
-            <div className="flex flex-wrap gap-4 mt-6">
-              <a
+            <p className="leading-relaxed text-gray-700">
+              Outside tech, I enjoy anime, gaming, and traveling — fueling creativity and balance in everything I build.
+            </p>
+
+            {/* 📨 Buttons */}
+            <div className="flex flex-wrap gap-4 mt-4">
+              <motion.a
+                whileHover={{ scale: 1.05 }}
                 href="/contact"
-                className="inline-block px-6 py-2.5 font-semibold text-white transition-all duration-300 rounded-lg shadow-md bg-gradient-to-r from-purple-600 to-purple-400 hover:shadow-purple-400/50 hover:scale-105"
+                className="px-6 py-2.5 font-semibold text-white rounded-lg bg-gradient-to-r from-[#7209B7] to-[#4361EE] shadow-md transition-transform"
               >
                 Get in Touch
-              </a>
+              </motion.a>
 
-              <a
+              <motion.a
+                whileHover={{ scale: 1.05 }}
                 href="/Resume_Karthik_Achari.pdf"
-                className="inline-flex items-center gap-2 px-5 py-2.5 font-semibold text-white rounded-lg shadow-md bg-gradient-to-r from-[#7F00FF] to-[#E100FF] hover:scale-105 transform transition-all duration-300"
                 download
+                className="px-5 py-2.5 font-semibold text-white rounded-lg bg-gradient-to-r from-[#5A3AFF] to-[#3A0CA3] shadow-md transition-transform"
               >
                 Download Resume
-              </a>
+              </motion.a>
             </div>
-          </div>
+          </motion.div>
 
           {/* ⚙️ Right Side: Skills + Certifications */}
-          <div className="flex flex-col justify-between p-8 md:w-1/2 md:p-12">
-            <div>
-              <h3 className="text-xl font-semibold text-purple-700">Skills</h3>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            custom={0.5}
+            className="flex flex-col justify-between p-10 md:w-1/2"
+          >
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              variants={fadeUp}
+              custom={0.6}
+            >
+              <h3 className="text-xl font-semibold text-[#5A3AFF]">Skills</h3>
               <div className="flex flex-wrap gap-2 mt-3">
-                {skills.map((s) => (
-                  <span
+                {skills.map((s, i) => (
+                  <motion.span
                     key={s}
-                    className="text-xs px-3 py-1.5 rounded-full bg-gradient-to-br from-purple-100/50 to-white border border-purple-200 text-purple-800 font-medium hover:scale-105 transition-transform"
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ type: 'spring', stiffness: 200 }}
+                    className="text-xs px-3 py-1.5 rounded-full bg-gradient-to-br from-[#E0C3FC]/60 to-[#8EC5FC]/60 border border-[#d1b3ff]/40 text-[#3A0CA3] font-medium"
                   >
                     {s}
-                  </span>
+                  </motion.span>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
             <div className="mt-8">
-              <h3 className="text-xl font-semibold text-purple-700">Certifications</h3>
+              <h3 className="text-xl font-semibold text-[#5A3AFF]">Certifications</h3>
               <ul className="mt-3 space-y-2 text-gray-700">
-                {certs.map((c) => (
-                  <li
+                {certs.map((c, i) => (
+                  <motion.li
                     key={c}
-                    className="px-3 py-2 rounded-lg bg-white/70 border border-purple-100 shadow-sm hover:shadow-md hover:scale-[1.02] transition-all"
+                    whileHover={{ scale: 1.03 }}
+                    className="px-3 py-2 rounded-lg bg-white/80 border border-[#D3C0FF]/40 shadow-sm hover:shadow-md transition-all"
                   >
                     {c}
-                  </li>
+                  </motion.li>
                 ))}
               </ul>
             </div>
 
-            <div className="pt-6 mt-auto">
-              <p className="text-sm italic text-gray-600">
-                Available for freelance & collaboration — open to exciting AI and data projects.
-              </p>
+            <div className="pt-6 mt-auto text-sm italic text-gray-600">
+              Available for freelance & collaboration — open to AI, analytics, and full-stack innovation.
             </div>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
 
       {/* 💫 Footer */}
-      <footer className="mt-10 text-sm text-center text-gray-500">
-        <div className="w-24 h-1 mx-auto mb-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 opacity-80" />
-        © {new Date().getFullYear()} Karthik Achari — Built with 💜 and creativity.
-      </footer>
+      <motion.footer
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeUp}
+        custom={0.6}
+        className="mt-12 text-sm text-center text-gray-500"
+      >
+        <div className="w-24 h-1 mx-auto mb-3 rounded-full bg-gradient-to-r from-[#7209B7] to-[#4361EE]" />
+             </motion.footer>
     </section>
   )
 }

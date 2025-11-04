@@ -1,36 +1,104 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import './App.css'
-import Navbar from './components/Navbar'
-import Footer from './components/Footer'
-import Home from './pages/Home'
-import Projects from './pages/Projects'
-import About from './pages/About'
-import Contact from './pages/Contact'
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, NavLink } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
+
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Projects from "./pages/Projects";
+import Contact from "./pages/Contact";
+
+// ✨ Page Transition Animation
+const pageTransition = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  exit: { opacity: 0, y: -20, transition: { duration: 0.4, ease: "easeIn" } },
+};
+
+// ✨ Navbar Component
+const Navbar = () => (
+  <nav className="fixed top-0 left-0 z-50 w-full shadow-sm backdrop-blur-md bg-white/80">
+    <div className="flex items-center justify-between px-6 py-4 mx-auto max-w-7xl">
+      {/* 🌟 Logo */}
+      <NavLink
+        to="/"
+        className="text-lg sm:text-xl font-bold bg-gradient-to-r from-[#7209B7] to-[#4361EE] bg-clip-text text-transparent"
+      >
+        T Karthik Achari
+      </NavLink>
+
+      {/* 🔗 Nav Links */}
+      <div className="flex gap-6 text-sm font-medium sm:text-base">
+        {["Home", "Projects", "About", "Contact"].map((item) => (
+          <NavLink
+            key={item}
+            to={item === "Home" ? "/" : `/${item.toLowerCase()}`}
+            className={({ isActive }) =>
+              `relative transition-all duration-300 ${
+                isActive
+                  ? "text-[#5A3AFF] font-semibold"
+                  : "text-gray-600 hover:text-[#7209B7]"
+              }`
+            }
+          >
+            {item}
+            {/* underline animation */}
+            <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-[#7209B7] to-[#4361EE] transition-all duration-300 group-hover:w-full"></span>
+          </NavLink>
+        ))}
+      </div>
+    </div>
+  </nav>
+);
 
 function App() {
   return (
-    <BrowserRouter>
-      <div className="relative flex flex-col min-h-screen text-gray-900 bg-white">
-        {/* Translucent wallpaper background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-white to-purple-50/30" />
-        
-        {/* Content */}
-        <div className="relative z-10">
-          <Navbar />
-          <main className="flex-1">
+    <Router>
+      <div className="font-[Inter] text-gray-900">
+        {/* Navbar */}
+        <Navbar />
+
+        {/* Page Container */}
+        <div className="pt-20"> {/* pushes content below navbar */}
+          <AnimatePresence mode="wait">
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
+              <Route
+                path="/"
+                element={
+                  <motion.div {...pageTransition}>
+                    <Home />
+                  </motion.div>
+                }
+              />
+              <Route
+                path="/projects"
+                element={
+                  <motion.div {...pageTransition}>
+                    <Projects />
+                  </motion.div>
+                }
+              />
+              <Route
+                path="/about"
+                element={
+                  <motion.div {...pageTransition}>
+                    <About />
+                  </motion.div>
+                }
+              />
+              <Route
+                path="/contact"
+                element={
+                  <motion.div {...pageTransition}>
+                    <Contact />
+                  </motion.div>
+                }
+              />
             </Routes>
-          </main>
-          <Footer />
+          </AnimatePresence>
         </div>
       </div>
-    </BrowserRouter>
-  )
+    </Router>
+  );
 }
 
-export default App
+export default App;

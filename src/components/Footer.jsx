@@ -1,8 +1,8 @@
 function Footer() {
   return (
-    <footer className="border-t border-gray-200 mt-12">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-sm text-gray-600">
-        © 2025 Karthik Achari • Built with React + Vite + Tailwind
+    <footer className="mt-12 border-t border-gray-200">
+      <div className="max-w-6xl px-4 py-6 mx-auto text-sm text-center text-gray-600 sm:px-6 lg:px-8">
+      © {new Date().getFullYear()} <span className="font-medium text-[#5A3AFF]">Karthik Achari</span> — Let’s create something amazing together 💜
       </div>
     </footer>
   )

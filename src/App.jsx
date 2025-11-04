@@ -7,6 +7,7 @@ import About from "./pages/About";
 import Projects from "./pages/Projects";
 import Contact from "./pages/Contact";
 
+
 // ✨ Page Transition Animation
 const pageTransition = {
   initial: { opacity: 0, y: 20 },
